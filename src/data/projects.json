@@ -1,115 +1,112 @@
 [
   {
     "id": "project-01",
-    "slug": "project-01",
-    "title": "FinPulse — Wealth Management App",
+    "slug": "maganghub",
+    "title": "MagangHub — Sistem Presensi Peserta Magang",
     "category": "Web Application",
     "year": 2026,
-    "description": "Platform keuangan modern untuk manajemen aset dan portofolio dengan analitik grafik interaktif dan arsitektur modular.",
-    "technologies": ["React", "TypeScript", "Tailwind CSS 4", "Recharts"],
-    "liveUrl": "https://example.com/finpulse",
+    "description": "Aplikasi web progresif (PWA) untuk presensi, pengajuan izin, dan pemantauan peserta magang Balai Bahasa Sumbar, dengan validasi lokasi GPS dan ekspor laporan otomatis.",
+    "technologies": [
+      "React 19",
+      "Vite",
+      "Tailwind CSS 4",
+      "Supabase",
+      "TanStack Query",
+      "PWA"
+    ],
+    "liveUrl": "https://maganghubbalai.vercel.app",
+    "githubUrl": "https://github.com/barqisayyid/maganghub",
     "featured": true,
-    "overview": "Aplikasi manajemen kekayaan dan analisis finansial personal dengan arsitektur modular, visualisasi grafik real-time, dan standar UX perbankan digital terkini.",
-    "challenge": "Pengguna sering kesulitan memantau alokasi portofolio lintas rekening tanpa antarmuka yang penuh angka membingungkan.",
-    "solution": "Menyusun hierarki metrik berlapis dengan kartu ringkasan kontras tinggi, filter rentang waktu instan, dan visualisasi aset adaptif.",
+    "overview": "Aplikasi web progresif (PWA) untuk pencatatan presensi, pengajuan izin, dan pemantauan peserta magang di Balai Bahasa Provinsi Sumatera Barat secara real-time. Dilengkapi validasi lokasi GPS (geofencing), dashboard analitik admin, serta ekspor laporan otomatis ke PDF berkop surat resmi dan Excel terformat.",
+    "challenge": "Pencatatan kehadiran peserta magang lintas batch secara manual menyulitkan verifikasi ketepatan waktu dan lokasi, memperlambat pengelolaan izin beserta bukti dokumennya, dan menyita waktu saat menyusun rekap laporan bulanan resmi instansi.",
+    "solution": "Membangun aplikasi PWA mobile-first yang memvalidasi radius kehadiran secara otomatis melalui GPS (rumus Haversine) dan waktu WIB, terhubung ke panel admin berbasis Supabase untuk pemantauan harian, persetujuan izin, manajemen akun per batch, hingga pembuatan laporan resmi dalam satu klik.",
     "features": [
-      "Ringkasan net-worth & alokasi aset real-time",
-      "Grafik performa interaktif ramah keyboard",
-      "Ekspor laporan ringkasan bulanan"
-    ]
+      "Presensi dengan geofencing GPS, status keterlambatan WIB, instalasi layaknya aplikasi native, dan notifikasi pengingat harian.",
+      "Pengajuan izin daring (Sakit, Izin, Dinas Luar) dengan unggah bukti ke Supabase Storage, plus manajemen peserta per batch dan pengumuman dari admin.",
+      "Dashboard analitik kehadiran dengan Recharts, serta ekspor laporan ke PDF berkop surat resmi dan Excel tiga sheet."
+    ],
+    "isDummy": false
   },
   {
     "id": "project-02",
-    "slug": "project-02",
-    "title": "Aura — Business Intelligence Dashboard",
-    "category": "Dashboard System",
-    "year": 2025,
-    "description": "Dashboard monitoring analitik multi-tenant dengan filter data instan, visualisasi metrik performa, dan export laporan CSV/PDF.",
-    "technologies": ["React", "Chart.js", "Tailwind CSS", "Lucide"],
-    "liveUrl": "https://example.com/aura",
+    "slug": "ppid-balai-bahasa",
+    "title": "PPID Balai Bahasa — Portal Informasi Publik",
+    "category": "Information System",
+    "year": 2026,
+    "description": "Portal keterbukaan informasi publik Balai Bahasa Sumbar: repositori dokumen, layanan permohonan dan pengaduan daring, serta dashboard admin terpadu.",
+    "technologies": [
+      "Laravel 13",
+      "PHP 8.3",
+      "MySQL",
+      "Tailwind CSS 4",
+      "Alpine.js",
+      "PhpSpreadsheet"
+    ],
+    "githubUrl": "https://github.com/barqisayyid/PPID-Balai-Bahasa-Sumatera-Barat",
     "featured": true,
-    "overview": "Sistem dashboard metrik analitik bisnis multi-tenant yang dirancang dengan rasio kontras tinggi, optimasi rendering data volume besar, dan kontrol navigasi intuitif.",
-    "challenge": "Dashboard lama lambat saat memuat ribuan baris metrik operasional dan sulit dibaca di layar laptop kecil.",
-    "solution": "Menerapkan container queries pada widget KPI, rendering tersegmentasi, dan sistem filter cepat tanpa reload penuh.",
+    "overview": "Portal Pejabat Pengelola Informasi dan Dokumentasi (PPID) Balai Bahasa Provinsi Sumatera Barat untuk mewujudkan keterbukaan informasi publik sesuai UU No. 14 Tahun 2008. Sistem ini menggabungkan repositori dokumen publik, layanan permohonan, pengaduan, dan keberatan daring dengan pelacakan status mandiri, serta dashboard admin terpadu bagi petugas.",
+    "challenge": "Instansi membutuhkan satu platform terpusat untuk mempublikasikan dokumen informasi publik sekaligus menangani permohonan, pengaduan, dan keberatan yang memiliki batas waktu layanan sesuai regulasi. Proses manual menyulitkan pemohon melacak status, rawan menghilangkan lampiran, dan memakan waktu saat memperbarui data agenda dalam jumlah banyak.",
+    "solution": "Membangun sistem informasi PPID berbasis web responsif dengan antarmuka publik dan panel admin terintegrasi. Setiap pengajuan otomatis memperoleh nomor registrasi unik beserta notifikasi email, lampiran disimpan di penyimpanan privat khusus petugas, perubahan data terekam di audit log, dan agenda kegiatan dapat dikelola massal lewat import/export Excel.",
     "features": [
-      "Filter multi-dimensi instan dengan state URL",
-      "Export laporan CSV & PDF sekali klik",
-      "Layout widget responsif berbasis container queries"
-    ]
+      "Layanan permohonan, pengaduan, dan keberatan daring dengan nomor registrasi otomatis, notifikasi email, dan halaman cek status mandiri.",
+      "Repositori informasi publik dalam 5 kategori dengan pencarian tabel interaktif dan pratinjau PDF langsung di browser.",
+      "Dashboard admin dengan ringkasan metrik layanan, unduh lampiran privat, import/export agenda via Excel, dan audit trail aktivitas."
+    ],
+    "isDummy": false
   },
   {
     "id": "project-03",
-    "slug": "project-03",
-    "title": "Svara — Academic Information System",
+    "slug": "silek",
+    "title": "SILEK — Sistem Layanan Elektronik Kebahasaan",
     "category": "Information System",
-    "year": 2025,
-    "description": "Portal akademik terpadu untuk pengelolaan jadwal perkuliahan, registrasi matakuliah, dan evaluasi hasil studi mahasiswa.",
-    "technologies": ["Astro", "TypeScript", "PostgreSQL", "Tailwind CSS"],
-    "liveUrl": "https://example.com/svara",
+    "year": 2026,
+    "description": "Portal layanan publik digital Balai Bahasa Sumbar dengan formulir dinamis, verifikasi OTP, pelacakan status, dan dashboard internal berbasis peran.",
+    "technologies": [
+      "Laravel 13",
+      "Livewire 3",
+      "Tailwind CSS 4",
+      "MySQL",
+      "Alpine.js",
+      "Spatie Permission"
+    ],
+    "githubUrl": "https://github.com/barqisayyid/silek",
     "featured": true,
-    "overview": "Portal informasi akademik terpadu untuk pengelolaan jadwal perkuliahan, registrasi matakuliah, dan evaluasi hasil studi mahasiswa.",
-    "challenge": "Proses pengisian KRS dan pengecekan jadwal di perangkat mobile sering mengalami overflow dan beban server tinggi.",
-    "solution": "Membangun antarmuka static-first dengan Astro & validasi skema ketat sehingga beban klien minimal dan responsif hingga layar 320px.",
+    "overview": "Portal satu pintu layanan publik digital untuk Balai Bahasa Provinsi Sumatera Barat yang memfasilitasi informasi layanan kebahasaan dan kesastraan, pengajuan permohonan berbasis formulir dinamis dengan verifikasi OTP, serta pelacakan status secara daring. Dilengkapi dashboard internal berbasis peran (RBAC) untuk verifikasi, disposisi petugas, komunikasi dua arah, pelaporan, dan audit log.",
+    "challenge": "Layanan kebahasaan dan kesastraan membutuhkan alur administrasi yang rapi agar pemohon tidak perlu datang langsung atau bolak-balik mengonfirmasi status berkas. Sistem juga harus memudahkan pengajuan tanpa wajib membuat akun, namun tetap aman dari spam, email enumeration, duplikasi pengajuan, dan akses dokumen tanpa otorisasi.",
+    "solution": "Membangun portal Unit Layanan Terpadu daring berbasis Laravel dan Livewire yang menggabungkan katalog layanan, formulir dinamis bersyarat, dan pelacakan berbasis OTP email dengan rate limiting. Untuk operasional internal diterapkan otorisasi 4 peran, validasi transisi status (state machine), disposisi petugas, penyimpanan berkas privat, notifikasi email otomatis, dan audit trail menyeluruh.",
     "features": [
-      "Jadwal kuliah & kalender akademik terintegrasi",
-      "Alur registrasi matakuliah bebas error",
-      "Transkrip & ringkasan progres studi aksesibel"
-    ]
+      "Pengajuan dengan formulir adaptif, unggah dokumen wajib per layanan, token idempotency anti-duplikasi, nomor tiket otomatis, dan verifikasi OTP 6 digit via email.",
+      "Pelacakan progres real-time, unduh dokumen balasan resmi, dan pengiriman ulang berkas saat status Perlu Perbaikan.",
+      "Dashboard internal 4 peran dengan grafik tren 7 hari, disposisi petugas, ekspor laporan CSV, manajemen konten/FAQ, dan log audit."
+    ],
+    "isDummy": false
   },
   {
     "id": "project-04",
-    "slug": "project-04",
-    "title": "Kalyana — Identity & Type Specimen",
-    "category": "Creative Design",
-    "year": 2025,
-    "description": "Perancangan sistem identitas visual berbasis tipografi display dan grid asimetris untuk studio seni kontemporer.",
-    "technologies": ["Typography", "Brand Guidelines", "Figma", "InDesign"],
-    "featured": true,
-    "overview": "Perancangan sistem identitas visual berbasis tipografi display dan grid asimetris untuk studio seni kontemporer di media cetak maupun digital.",
-    "challenge": "Menciptakan karakter visual yang berani dan editorial namun tetap mudah diaplikasikan konsisten oleh tim internal studio.",
-    "solution": "Menyusun panduan brand komprehensif meliputi skala tipografi, proporsi grid modular, dan sistem warna berkontras tinggi.",
-    "features": [
-      "Sistem grid editorial 12-kolom asimetris",
-      "Type specimen interaktif & panduan cetak",
-      "Sistem aplikasi logo lintas media"
-    ]
-  },
-  {
-    "id": "project-05",
-    "slug": "project-05",
-    "title": "Nexus AI — Developer Tool Landing Page",
-    "category": "Landing Page",
+    "slug": "sipap",
+    "title": "SIPAP — Penjadwalan & Agenda Pimpinan",
+    "category": "Information System",
     "year": 2026,
-    "description": "Landing page modern dengan visual storytelling, mikro-interaksi responsif, dan performa tinggi.",
-    "technologies": ["Astro SSG", "Motion", "Tailwind CSS 4", "Vercel"],
-    "liveUrl": "https://example.com/nexus-ai",
+    "description": "PWA mobile-first untuk mengelola agenda kedinasan Kepala Balai Bahasa Sumbar, dengan deteksi bentrok jadwal, notifikasi WhatsApp berjenjang, dan konfirmasi cepat tanpa login.",
+    "technologies": [
+      "Next.js 15",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS 4",
+      "Supabase",
+      "Vercel"
+    ],
+    "liveUrl": "https://sipap-balai-bahasa.vercel.app",
+    "githubUrl": "https://github.com/barqisayyid/sipap-balai-bahasa",
     "featured": true,
-    "overview": "Landing page modern untuk produk developer tool AI dengan visual storytelling terarah, mikro-interaksi CSS compositor, dan zero-layout-shift.",
-    "challenge": "Menjelaskan alur kerja teknis CLI & API dalam 5 detik pertama tanpa mengorbankan kecepatan muat halaman (LCP).",
-    "solution": "Menggunakan Astro SSG + animasi CSS native (0 KB runtime animasi) serta ilustrasi interaktif ringan untuk demo fitur inti.",
+    "overview": "Aplikasi Progressive Web App mobile-first untuk mengelola, memantau, dan mengonfirmasi agenda kedinasan Kepala Balai Bahasa Provinsi Sumatera Barat secara terpusat. Dilengkapi deteksi bentrok jadwal real-time, notifikasi WhatsApp otomatis berjenjang dengan cadangan Web Push, serta konfirmasi cepat tanpa perlu login.",
+    "challenge": "Koordinasi agenda pimpinan yang tersebar lewat pesan chat rentan memicu jadwal bentrok dan keterlambatan konfirmasi akibat mobilitas yang tinggi, serta berisiko melewatkan pengingat bila hanya bergantung pada satu kanal komunikasi.",
+    "solution": "Membangun sistem penjadwalan PWA mobile-first dengan identitas visual bernuansa Minangkabau, deteksi konflik jadwal real-time, tautan konfirmasi cepat bertoken unik tanpa login, dan mesin notifikasi terjadwal lewat WhatsApp Gateway yang dilengkapi eskalasi otomatis dan cadangan Web Push.",
     "features": [
-      "Skor Lighthouse Performance 99 & LCP < 1.2s",
-      "Demo arsitektur interaktif tanpa beban bundle besar",
-      "Struktur copywriting konversi terukur"
-    ]
-  },
-  {
-    "id": "project-06",
-    "slug": "project-06",
-    "title": "Nusantara — Cultural Digital Archive",
-    "category": "Digital Experience",
-    "year": 2026,
-    "description": "Ruang pamer digital interaktif yang menyajikan dokumentasi wastra tradisional dengan interaksi berbasis 3D visual.",
-    "technologies": ["WebGL", "Three.js", "React", "Tailwind CSS"],
-    "liveUrl": "https://example.com/nusantara",
-    "featured": true,
-    "overview": "Ruang pamer digital interaktif yang menyajikan dokumentasi wastra tradisional Indonesia dengan eksplorasi visual 3D dan narasi kuratorial.",
-    "challenge": "Membuat arsip budaya terasa imersif dan menarik bagi generasi muda tanpa mengecualikan pengguna perangkat menengah atau pembaca layar.",
-    "solution": "Menggabungkan kanvas 3D progresif yang berhenti saat off-screen dengan metadata kuratorial HTML semantik penuh.",
-    "features": [
-      "Eksplorasi motif wastra interaktif dengan narasi sejarah",
-      "Pausing otomatis untuk efisiensi baterai & GPU",
-      "Fallback galeri resolusi tinggi aksesibel"
-    ]
+      "Dasbor agenda terpusat dengan jam WIB, kalender, lampiran surat terproteksi (Signed URL), ekspor kalender .ics, dan peringatan jadwal bentrok.",
+      "Notifikasi WhatsApp berjenjang (rekap pagi, pengingat H-1 dan 2 jam sebelum acara, eskalasi bila belum dikonfirmasi) dengan cadangan Web Push dan halaman log.",
+      "Konfirmasi Hadir atau Didisposisikan dalam satu ketukan lewat tautan bertoken aman, didukung 5 peran pengguna dan proteksi agenda sensitif."
+    ],
+    "isDummy": false
   }
 ]

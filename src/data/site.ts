@@ -10,8 +10,8 @@ export const site = {
   socials: {
     linkedin:
       "https://www.linkedin.com/in/sayyid-barqi-almukarrom-ramadhan-62372632a/", // TODO
-    github: "https://github.com/barqisayyid", // TODO
-    instagram: "https://instagram.com/barqisayyid", // TODO
+    github: "https://github.com/barqisayyid/", // TODO
+    instagram: "https://instagram.com/barqisayyid/", // TODO
   },
   /**
    * true  => <meta name="robots" content="noindex, nofollow"> aktif.
@@ -23,7 +23,7 @@ export const site = {
     { label: "Services", href: "/#services" },
     { label: "Projects", href: "/#projects" },
     { label: "Experience", href: "/experience" },
-    { label: "Creative Works", href: "/#works" },
+    // { label: "Creative Works", href: "/#works" },
     { label: "About", href: "/#about" },
     { label: "Contact", href: "/#contact" },
   ],

@@ -1,13 +1,14 @@
 ---
 import { getCollection } from 'astro:content';
 import Button from '../ui/Button.astro';
+import { formatPeriod } from '../../data/format';
 
-const experiences = (await getCollection('experiences')).sort((a, b) =>
-  b.data.startDate.localeCompare(a.data.startDate),
-);
-
-const period = (d: (typeof experiences)[number]['data']) =>
-  `${d.startDate} — ${d.isCurrent ? 'Sekarang' : (d.endDate ?? '')}`;
+const experiences = (await getCollection('experiences'))
+  .sort((a, b) => {
+    if (a.data.isCurrent !== b.data.isCurrent) return a.data.isCurrent ? -1 : 1;
+    return b.data.startDate.localeCompare(a.data.startDate);
+  })
+  .slice(0, 3);
 ---
 
 <section class="content deferred-section" id="experience" tabindex="-1" aria-labelledby="experience-heading">
@@ -25,7 +26,7 @@ const period = (d: (typeof experiences)[number]['data']) =>
     {
       experiences.map(({ data }) => (
         <li class="experience-card reveal-item">
-          <div class="exp-period">{period(data)}</div>
+          <div class="exp-period">{formatPeriod(data)}</div>
           <div class="exp-role">
             <h3>{data.position}</h3>
             <p class="company">{data.organization} · {data.location}</p>
