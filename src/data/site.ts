@@ -5,19 +5,19 @@ export const site = {
   description:
     "Portfolio Sayyid Barqi — Creative Designer & Web Developer. Selected works in web development, visual design, and UI/UX.",
   url: "https://barqilabs.my.id",
-  email: "sayyidbarqi@gmail.com", // TODO: ganti email asli (PRD §17 Pending)
-  whatsapp: "https://wa.me/6282386365211", // TODO
+  email: "sayyidbarqi0911@gmail.com", 
+  whatsapp: "https://wa.me/6282386365211", 
   socials: {
     linkedin:
-      "https://www.linkedin.com/in/sayyid-barqi-almukarrom-ramadhan-62372632a/", // TODO
-    github: "https://github.com/barqisayyid/", // TODO
-    instagram: "https://instagram.com/barqisayyid/", // TODO
+      "https://www.linkedin.com/in/sayyid-barqi-almukarrom-ramadhan-62372632a/", 
+    github: "https://github.com/barqisayyid/", 
+    instagram: "https://instagram.com/barqisayyid/", 
   },
   /**
-   * true  => <meta name="robots" content="noindex, nofollow"> aktif.
-   * Ubah ke false HANYA setelah semua item PRD §17 terisi konten asli.
+   * true  => <meta name="robots" content="noindex, nofollow"> aktif & robots.txt Disallow: /.
+   * Otomatis true hanya pada Vercel Preview deployment agar URL preview tidak terindeks.
    */
-  isStaging: true,
+  isStaging: import.meta.env.VERCEL_ENV === "preview",
   nav: [
     { label: "Home", href: "/#home" },
     { label: "Services", href: "/#services" },
