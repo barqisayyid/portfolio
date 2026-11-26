@@ -414,13 +414,19 @@ dialog[open]:not([data-closing])::backdrop {
    FASE 3: VIEW TRANSITIONS (opt-in reduced-motion) & FOKUS PROGRAMATIK
    ========================================================================== */
 @media (prefers-reduced-motion: no-preference) {
-  @view-transition { navigation: auto; }
+  @view-transition {
+    navigation: auto;
+  }
   ::view-transition-old(root),
-  ::view-transition-new(root) { animation-duration: 0.25s; }
+  ::view-transition-new(root) {
+    animation-duration: 0.25s;
+  }
 }
 
 /* Target anchor (section/main) menerima fokus programatik tanpa outline besar */
-[tabindex="-1"]:focus { outline: none; }
+[tabindex="-1"]:focus {
+  outline: none;
+}
 
 /* ==========================================================================
    FASE 4: HERO WRAPPER (aurora merah + grid 92px)
@@ -433,9 +439,21 @@ dialog[open]:not([data-closing])::backdrop {
   padding-block-start: 5.5rem;
   color: var(--color-text);
   background:
-    radial-gradient(540px 440px at 12% 18%, rgba(255, 90, 102, 0.38), transparent 70%),
-    radial-gradient(580px 490px at 90% 22%, rgba(217, 45, 58, 0.18), transparent 70%),
-    radial-gradient(650px 430px at 50% 100%, rgba(217, 45, 58, 0.16), transparent 70%),
+    radial-gradient(
+      540px 440px at 12% 18%,
+      rgba(255, 90, 102, 0.38),
+      transparent 70%
+    ),
+    radial-gradient(
+      580px 490px at 90% 22%,
+      rgba(217, 45, 58, 0.18),
+      transparent 70%
+    ),
+    radial-gradient(
+      650px 430px at 50% 100%,
+      rgba(217, 45, 58, 0.16),
+      transparent 70%
+    ),
     var(--color-paper);
 }
 .hero-wrap::before {
@@ -459,7 +477,11 @@ dialog[open]:not([data-closing])::backdrop {
   overflow: clip;
   padding: 5.75rem 8%;
 }
-.content > * { position: relative; z-index: 1; }
+/* .content > * { position: relative; z-index: 1; } */
+.content > *:not(dialog) {
+  position: relative;
+  z-index: 1;
+}
 
 /* Dipasang di Fase 5 pada section berat di bawah fold */
 .deferred-section {
@@ -476,12 +498,48 @@ dialog[open]:not([data-closing])::backdrop {
   pointer-events: none;
   z-index: 0;
 }
-#services::before   { inline-size: 460px; block-size: 460px; right: -120px; top: 10%;    background: radial-gradient(circle, rgba(217, 45, 58, 0.22), transparent 70%); }
-#services::after    { inline-size: 420px; block-size: 420px; left: -140px;  bottom: 4%;  background: radial-gradient(circle, rgba(217, 45, 58, 0.12), transparent 70%); }
-#projects::before   { inline-size: 480px; block-size: 480px; left: -140px;  top: 6%;     background: radial-gradient(circle, rgba(217, 45, 58, 0.16), transparent 70%); }
-#projects::after    { inline-size: 520px; block-size: 520px; right: -160px; bottom: 8%;  background: radial-gradient(circle, rgba(217, 45, 58, 0.14), transparent 70%); }
-#experience::before { inline-size: 400px; block-size: 400px; right: -80px;  top: 20%;    background: radial-gradient(circle, rgba(217, 45, 58, 0.14), transparent 70%); }
-#about::before      { inline-size: 420px; block-size: 420px; left: -100px;  top: 10%;    background: radial-gradient(circle, rgba(217, 45, 58, 0.15), transparent 70%); }
+#services::before {
+  inline-size: 460px;
+  block-size: 460px;
+  right: -120px;
+  top: 10%;
+  background: radial-gradient(circle, rgba(217, 45, 58, 0.22), transparent 70%);
+}
+#services::after {
+  inline-size: 420px;
+  block-size: 420px;
+  left: -140px;
+  bottom: 4%;
+  background: radial-gradient(circle, rgba(217, 45, 58, 0.12), transparent 70%);
+}
+#projects::before {
+  inline-size: 480px;
+  block-size: 480px;
+  left: -140px;
+  top: 6%;
+  background: radial-gradient(circle, rgba(217, 45, 58, 0.16), transparent 70%);
+}
+#projects::after {
+  inline-size: 520px;
+  block-size: 520px;
+  right: -160px;
+  bottom: 8%;
+  background: radial-gradient(circle, rgba(217, 45, 58, 0.14), transparent 70%);
+}
+#experience::before {
+  inline-size: 400px;
+  block-size: 400px;
+  right: -80px;
+  top: 20%;
+  background: radial-gradient(circle, rgba(217, 45, 58, 0.14), transparent 70%);
+}
+#about::before {
+  inline-size: 420px;
+  block-size: 420px;
+  left: -100px;
+  top: 10%;
+  background: radial-gradient(circle, rgba(217, 45, 58, 0.15), transparent 70%);
+}
 
 .section-head {
   display: flex;
@@ -516,7 +574,10 @@ dialog[open]:not([data-closing])::backdrop {
   margin: 0.625rem 0 0;
   color: var(--color-ink);
 }
-.section-title em { font-style: italic; color: var(--color-crimson); }
+.section-title em {
+  font-style: italic;
+  color: var(--color-crimson);
+}
 .section-intro {
   max-inline-size: 24rem;
   margin: 0;
@@ -526,9 +587,15 @@ dialog[open]:not([data-closing])::backdrop {
 }
 
 @media (max-width: 820px) {
-  .content { padding: 4rem 1.25rem; }
-  .section-head { display: block; }
-  .section-intro { margin-block-start: 0.875rem; }
+  .content {
+    padding: 4rem 1.25rem;
+  }
+  .section-head {
+    display: block;
+  }
+  .section-intro {
+    margin-block-start: 0.875rem;
+  }
 }
 
 /* ==========================================================================
@@ -537,9 +604,15 @@ dialog[open]:not([data-closing])::backdrop {
    ========================================================================== */
 @media (prefers-reduced-motion: no-preference) {
   @supports ((animation-timeline: view()) and (animation-range: entry)) {
-        @keyframes reveal-up {
-      from { opacity: 0.01; transform: translateY(24px); }
-      to   { opacity: 1;    transform: none; }
+    @keyframes reveal-up {
+      from {
+        opacity: 0.01;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
     }
     .reveal-item {
       animation: reveal-up auto linear both;
@@ -552,7 +625,9 @@ dialog[open]:not([data-closing])::backdrop {
 @media (forced-colors: active) {
   .hero-wrap::before,
   .content::before,
-  .content::after { display: none; }
+  .content::after {
+    display: none;
+  }
 }
 
 /* ==========================================================================
@@ -623,7 +698,9 @@ dialog[open]:not([data-closing])::backdrop {
 
 @media (forced-colors: active) {
   .tech-pill,
-  .lightbox-stage { border: 1px solid CanvasText; }
+  .lightbox-stage {
+    border: 1px solid CanvasText;
+  }
 }
 
 /* ==========================================================================
@@ -647,7 +724,10 @@ dialog[open]:not([data-closing])::backdrop {
   letter-spacing: -0.04em;
   color: var(--color-ink);
 }
-.page-title em { font-style: italic; color: var(--color-crimson); }
+.page-title em {
+  font-style: italic;
+  color: var(--color-crimson);
+}
 .page-lead {
   max-inline-size: 40rem;
   margin: 0;
@@ -655,5 +735,7 @@ dialog[open]:not([data-closing])::backdrop {
   color: #474747;
 }
 @media (max-width: 820px) {
-  .page-intro { padding: 2.5rem 1.25rem 2rem; }
+  .page-intro {
+    padding: 2.5rem 1.25rem 2rem;
+  }
 }
