@@ -1,0 +1,58 @@
+[
+  {
+    "id": "work-01",
+    "title": "The Architecture of Silence",
+    "category": "Poster & Typography",
+    "year": 2025,
+    "description": "Eksplorasi tipografi kontras tinggi yang meneliti hubungan antara ruang kosong (whitespace) dan gravitasi teks dalam desain poster editorial.",
+    "mock": {
+      "bg": "#1B181E",
+      "color": "#FFFFFF",
+      "top": "POSTER '25",
+      "main": "SILENCE & SPACE",
+      "bottom": "TYPOGRAPHY SPECIMEN"
+    }
+  },
+  {
+    "id": "work-02",
+    "title": "Metropolis Horizon",
+    "category": "Visual Identity",
+    "year": 2025,
+    "description": "Konsep identitas visual untuk simposium tata kota berkelanjutan dengan palet warna crimson-terakota dan grid modular.",
+    "mock": {
+      "bg": "#F4EBE2",
+      "color": "#111111",
+      "top": "METROPOLIS SYMPOSIUM",
+      "main": "HORIZON GRID",
+      "bottom": "VISUAL IDENTITY SYSTEM"
+    }
+  },
+  {
+    "id": "work-03",
+    "title": "Refleksi Nusantara",
+    "category": "Editorial Publication",
+    "year": 2024,
+    "description": "Desain sampul dan tata letak buku mini dokumentasi wastra tradisional Indonesia dengan pendekatan komposisi asimetris.",
+    "mock": {
+      "bg": "#F8F5EF",
+      "color": "#111111",
+      "top": "VOL. 04 · EDITORIAL",
+      "main": "Refleksi Nusantara",
+      "bottom": "MINI BOOK COVER"
+    }
+  },
+  {
+    "id": "work-04",
+    "title": "Cybernetic Botany",
+    "category": "Digital Artwork",
+    "year": 2025,
+    "description": "Kombinasi ilustrasi botani klasik dengan aksen geometris komputasi modern dalam komposisi vektor presisi.",
+    "mock": {
+      "bg": "#232824",
+      "color": "#E8ECE9",
+      "top": "HYBRID STUDY",
+      "main": "BOTANY.SYS",
+      "bottom": "DIGITAL VECTOR ARTWORK"
+    }
+  }
+]

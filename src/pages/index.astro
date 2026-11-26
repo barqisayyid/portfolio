@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroStage from '../components/sections/HeroStage.astro';
+import MarqueeTicker from '../components/sections/MarqueeTicker.astro';
+import ServicesAccordion from '../components/sections/ServicesAccordion.astro';
+import SelectedProjects from '../components/sections/SelectedProjects.astro';
+import ExperiencePreview from '../components/sections/ExperiencePreview.astro';
+import CreativeWorks from '../components/sections/CreativeWorks.astro';
+import AboutMe from '../components/sections/AboutMe.astro';
+import ContactCard from '../components/sections/ContactCard.astro';
+---
+
+<BaseLayout>
+  <div class="hero-wrap" id="home" tabindex="-1">
+    <HeroStage />
+    <MarqueeTicker />
+  </div>
+
+  <ServicesAccordion />
+  <SelectedProjects />
+  <ExperiencePreview />
+  <CreativeWorks />
+  <AboutMe />
+  <ContactCard />
+</BaseLayout>

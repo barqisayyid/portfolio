@@ -1,0 +1,287 @@
+---
+interface Props {
+  email: string;
+  id?: string;
+}
+const { email, id = 'email' } = Astro.props;
+const textId = `${id}-text`;
+const toastId = `${id}-toast`;
+---
+
+<div class="copy-email" data-copy-root>
+  <div class="copy-email-bar glass glass-strong">
+    <span class="copy-email-text" id={textId}>{email}</span>
+    <button
+      type="button"
+      class="copy-email-btn"
+      command="--copy"
+      commandfor={textId}
+      data-copy-btn
+    >
+      <span aria-hidden="true" data-copy-icon>⧉</span>
+      <span>Salin Email<span class="visually-hidden"> {email}</span></span>
+    </button>
+  </div>
+
+  <!-- Di luar <button>; disembunyikan via opacity agar tetap ada di accessibility tree -->
+  <span class="copy-status" role="status" data-copy-status></span>
+
+  <div class="toast" id={toastId} popover="manual" data-toast>
+    <span aria-hidden="true" data-toast-icon>✓</span>
+    <span data-toast-message></span>
+    <button
+      type="button"
+      class="toast-close"
+      popovertarget={toastId}
+      popovertargetaction="hide"
+      aria-label="Tutup notifikasi"
+      data-toast-close
+    >
+      <span aria-hidden="true">✕</span>
+    </button>
+  </div>
+</div>
+
+<style>
+  .copy-email {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.4rem;
+  }
+  .copy-email-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+    border-radius: 999px;
+    padding: 0.35rem 0.4rem 0.35rem 1.125rem;
+  }
+  .copy-email-text {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1f1f1f;
+    overflow-wrap: anywhere;
+  }
+  .copy-email-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-block-size: 2.35rem;
+    padding: 0.55rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: var(--color-crimson);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .copy-email-btn:hover { background: var(--color-crimson-text); }
+  .copy-email-btn[data-copied] { background: #146c43; }
+  .copy-email-btn[data-failed] { background: #842029; }
+
+  .copy-status {
+    min-block-size: 1.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-glass-edge);
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--color-ink);
+    font-size: 0.78rem;
+    font-weight: 700;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
+  .copy-status.is-visible { opacity: 1; }
+
+  /* ---- Toast (popover="manual") ---- */
+  .toast[popover] {
+    position: fixed;
+    inset: auto 1.5rem 5rem auto;
+    margin: 0;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    background: rgba(17, 17, 17, 0.95);
+    color: #fff;
+    padding: 0.75rem 0.875rem 0.75rem 1.125rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+    max-inline-size: calc(100dvw - 2rem);
+    opacity: 0;
+    transition-property: opacity, transform, display, overlay;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out;
+    transition-behavior: allow-discrete;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .toast[popover] { transform: translateY(10px); }
+  }
+  /* Browser tanpa dukungan popover: sembunyikan sampai kelas .is-open dipasang */
+  @supports not selector(:popover-open) {
+    .toast[popover]:not(.is-open, .\:popover-open) { display: none; }
+  }
+  .toast[popover]:is(:popover-open, .\:popover-open, .is-open) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .toast[popover]:is(:popover-open, .\:popover-open, .is-open) { transform: translateY(0); }
+  }
+  @starting-style {
+    .toast[popover]:is(:popover-open, .\:popover-open, .is-open) {
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    @starting-style {
+      .toast[popover]:is(:popover-open, .\:popover-open, .is-open) {
+        transform: translateY(10px);
+      }
+    }
+  }
+
+  .toast-close {
+    display: grid;
+    place-items: center;
+    min-inline-size: 1.75rem;
+    min-block-size: 1.75rem;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  .toast-close:hover { background: rgba(255, 255, 255, 0.28); }
+  @media (pointer: coarse) {
+    .toast-close { min-inline-size: 2.75rem; min-block-size: 2.75rem; }
+  }
+
+  @media (forced-colors: active) {
+    .copy-status,
+    .toast[popover],
+    .copy-email-btn { border: 1px solid CanvasText; }
+    .copy-email-btn { border-width: 2px; border-color: Highlight; }
+  }
+</style>
+
+<script>
+  let copyTimer: number | undefined;
+  let toastTimer: number | undefined;
+  let lastTrigger: HTMLElement | null = null;
+
+  type CommandLike = Event & { command: string; source: HTMLElement };
+
+  function announce(status: HTMLElement, message: string): void {
+    // VoiceOver tidak membacakan teks identik berurutan, jadi selang-seling dengan NBSP
+    const same = status.dataset.last === message;
+    status.textContent = same ? `${message}\u00A0` : message;
+    status.dataset.last = message;
+    status.classList.add('is-visible');
+  }
+
+  function hideToast(toast: HTMLElement): void {
+    if (typeof toast.hidePopover === 'function' && toast.matches(':popover-open')) {
+      toast.hidePopover();
+    }
+    toast.classList.remove('is-open');
+  }
+
+  function scheduleToastDismiss(toast: HTMLElement): void {
+    clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(() => {
+      // Jangan tutup otomatis saat fokus berada di dalam toast
+      if (toast.contains(document.activeElement)) {
+        scheduleToastDismiss(toast);
+        return;
+      }
+      hideToast(toast);
+    }, 3500);
+  }
+
+  function showToast(root: HTMLElement, ok: boolean, message: string, trigger: HTMLElement): void {
+    const toast = root.querySelector<HTMLElement>('[data-toast]');
+    const icon = root.querySelector<HTMLElement>('[data-toast-icon]');
+    const msg = root.querySelector<HTMLElement>('[data-toast-message]');
+    if (!toast || !icon || !msg) return;
+
+    lastTrigger = trigger;
+    icon.textContent = ok ? '✓' : '!';
+    icon.style.color = ok ? '#4ade80' : '#f87171';
+    msg.textContent = message;
+
+    if (typeof toast.showPopover === 'function') {
+      if (!toast.matches(':popover-open')) toast.showPopover();
+    } else {
+      toast.classList.add('is-open');
+    }
+    scheduleToastDismiss(toast);
+  }
+
+  async function copyEmail(root: HTMLElement, button: HTMLElement, target: HTMLElement): Promise<void> {
+    const text = target.textContent?.trim() ?? '';
+    const icon = root.querySelector<HTMLElement>('[data-copy-icon]');
+    const status = root.querySelector<HTMLElement>('[data-copy-status]');
+    if (!text || !icon || !status) return;
+
+    let ok = false;
+    try {
+      await navigator.clipboard.writeText(text);
+      ok = true;
+    } catch {
+      ok = false;
+    }
+
+    clearTimeout(copyTimer);
+    button.removeAttribute('data-copied');
+    button.removeAttribute('data-failed');
+    button.setAttribute(ok ? 'data-copied' : 'data-failed', '');
+    icon.textContent = ok ? '✓' : '!';
+
+    announce(status, ok ? 'Tersalin ke clipboard!' : 'Gagal menyalin. Salin secara manual.');
+    showToast(
+      root,
+      ok,
+      ok ? 'Alamat email berhasil disalin!' : 'Izin clipboard ditolak. Salin alamat email secara manual.',
+      button,
+    );
+
+    copyTimer = window.setTimeout(() => {
+      button.removeAttribute('data-copied');
+      button.removeAttribute('data-failed');
+      icon.textContent = '⧉';
+      status.classList.remove('is-visible');
+      status.textContent = '';
+    }, 2500);
+  }
+
+  // Event "command" tidak bubbling, jadi dengarkan di fase capture.
+  // Polyfill (invokers-polyfill) dimuat bersyarat oleh progressive-enhancements.ts.
+  document.addEventListener(
+    'command',
+    (event) => {
+      const e = event as CommandLike;
+      if (e.command !== '--copy') return;
+      const root = e.source.closest<HTMLElement>('[data-copy-root]');
+      if (root) void copyEmail(root, e.source, e.target as HTMLElement);
+    },
+    true,
+  );
+
+  // Tombol tutup toast: kembalikan fokus ke tombol Salin
+  document.querySelectorAll<HTMLElement>('[data-toast-close]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      clearTimeout(toastTimer);
+      btn.closest('[data-toast]')?.classList.remove('is-open');
+      lastTrigger?.focus();
+    });
+  });
+</script>

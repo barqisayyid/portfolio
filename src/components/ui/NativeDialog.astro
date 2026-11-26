@@ -1,0 +1,31 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  kicker?: string;
+  subtitle?: string;
+  closeLabel?: string;
+}
+const { id, title, kicker = '', subtitle = '', closeLabel = 'Tutup dialog' } = Astro.props;
+const titleId = `${id}-title`;
+---
+
+<dialog id={id} closedby="any" aria-labelledby={titleId}>
+  <div class="glass-dialog-content">
+    <div class="dialog-header">
+      <div>
+        <span class="dialog-kicker" id={`${id}-kicker`}>{kicker}</span>
+        <h2 class="dialog-title" id={titleId}>{title}</h2>
+        <span class="dialog-meta-sub" id={`${id}-subtitle`}>{subtitle}</span>
+      </div>
+      <form method="dialog">
+        <button type="submit" class="dialog-close-btn" aria-label={closeLabel} autofocus>
+          <span aria-hidden="true">✕</span>
+        </button>
+      </form>
+    </div>
+    <div class="dialog-stack">
+      <slot />
+    </div>
+  </div>
+</dialog>

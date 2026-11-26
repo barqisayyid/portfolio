@@ -1,0 +1,278 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+
+const experiences = (await getCollection('experiences')).sort((a, b) => {
+  if (a.data.isCurrent !== b.data.isCurrent) return a.data.isCurrent ? -1 : 1;
+  return b.data.startDate.localeCompare(a.data.startDate);
+});
+
+const projects = await getCollection('projects');
+const projectBySlug = new Map(projects.map((p) => [p.data.slug, p.data]));
+const shortName = (title: string) => title.split(' — ')[0];
+
+type Exp = (typeof experiences)[number]['data'];
+const period = (d: Exp) => `${d.startDate} — ${d.isCurrent ? 'Sekarang' : (d.endDate ?? '')}`;
+
+// Gabungan keahlian unik dari semua pengalaman
+const allSkills = [...new Set(experiences.flatMap((e) => e.data.skills))];
+---
+
+<BaseLayout
+  title="Experience"
+  description="Perjalanan profesional Sayyid Barqi: pengalaman kerja, magang, dan kontribusi di bidang web development dan desain visual."
+>
+  <div class="hero-wrap">
+    <section class="page-intro" aria-labelledby="exp-title">
+      <div class="kicker" lang="en">Career Journey</div>
+      <h1 id="exp-title" class="page-title" lang="en">Professional <em>Experience</em></h1>
+      <p class="page-lead">
+        Perjalanan profesional saya dalam merancang antarmuka website, membangun sistem informasi, dan menciptakan identitas visual.
+      </p>
+    </section>
+  </div>
+
+  <section class="content" aria-labelledby="journey-heading">
+    <div class="section-head">
+      <div>
+        <h2 id="journey-heading" class="section-title" lang="en">Professional <em>Journey</em></h2>
+      </div>
+      <p class="section-intro">Diurutkan dari yang terbaru. Setiap entri memuat tanggung jawab, keahlian, dan project terkait.</p>
+    </div>
+
+    <ol class="exp-list" role="list">
+      {
+        experiences.map(({ data }) => (
+          <li class="reveal-item">
+            <article class="exp-card">
+              <header class="exp-head">
+                <p class="exp-period">{period(data)}</p>
+                <span class="exp-badge">{data.employmentType}</span>
+              </header>
+
+              <h3>{data.position}</h3>
+              <p class="exp-org">{data.organization} · {data.location}</p>
+              <p class="exp-summary">{data.summary}</p>
+
+              <div class="exp-cols">
+                <div>
+                  <h4 class="exp-label">Tanggung Jawab</h4>
+                  <ul class="exp-bullets">
+                    {data.responsibilities.map((r) => <li>{r}</li>)}
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 class="exp-label">Tools &amp; Skills</h4>
+                  <ul class="skill-row" role="list">
+                    {data.skills.map((s) => <li class="pill pill--crimson">{s}</li>)}
+                  </ul>
+
+                  {data.relatedProjects && data.relatedProjects.length > 0 && (
+                    <>
+                      <h4 class="exp-label exp-label--spaced">Project Terkait</h4>
+                      <ul class="related-list" role="list">
+                        {data.relatedProjects.map((slug) => {
+                          const p = projectBySlug.get(slug);
+                          return (
+                            p && (
+                              <li>
+                                <a href={`/projects/${slug}`}>
+                                  {shortName(p.title)} <span aria-hidden="true">→</span>
+                                </a>
+                              </li>
+                            )
+                          );
+                        })}
+                      </ul>
+                    </>
+                  )}
+                </div>
+              </div>
+            </article>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="content skills-section" aria-labelledby="skills-heading">
+    <h2 id="skills-heading" class="section-title" lang="en">Tools &amp; <em>Skills</em></h2>
+    <ul class="skill-row skill-row--loose" role="list">
+      {allSkills.map((s) => <li class="pill">{s}</li>)}
+    </ul>
+  </section>
+
+  <section class="content cta-section" aria-labelledby="exp-cta-heading">
+    <div class="cta-card glass">
+      <div>
+        <h2 id="exp-cta-heading" class="cta-title" lang="en">Let's build something <em>together.</em></h2>
+        <p>Lihat hasil kerja saya atau langsung hubungi saya untuk berdiskusi.</p>
+      </div>
+      <div class="cta-actions">
+        <Button href="/#projects">Lihat Project <span aria-hidden="true">↗</span></Button>
+        <Button variant="glass" href="/#contact">Hubungi Saya</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .exp-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .exp-card {
+    padding: 1.75rem 2rem;
+    border-radius: 1.375rem;
+    background: var(--color-glass);
+    -webkit-backdrop-filter: var(--blur);
+    backdrop-filter: var(--blur);
+    border: 1px solid var(--color-glass-border);
+    box-shadow: 0 10px 32px rgba(31, 26, 23, 0.06), 0 0 0 1px var(--color-glass-edge), inset 0 1px 0 #fff;
+  }
+
+  .exp-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-block-end: 0.75rem;
+  }
+  .exp-period {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-crimson-text);
+  }
+  .exp-badge {
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    background: rgba(217, 45, 58, 0.12);
+    border: 1px solid rgba(217, 45, 58, 0.3);
+    color: #8e1823;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .exp-card h3 {
+    margin: 0;
+    font: 800 1.5rem/1.25 var(--font-display);
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+  .exp-org {
+    margin: 0.25rem 0 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #444;
+  }
+  .exp-summary {
+    max-inline-size: 48rem;
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--color-muted);
+  }
+
+  .exp-cols {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 2rem;
+    margin-block-start: 1.5rem;
+    padding-block-start: 1.25rem;
+    border-top: 1px solid rgba(31, 26, 23, 0.1);
+  }
+  .exp-label {
+    margin: 0 0 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-crimson-text);
+  }
+  .exp-label--spaced { margin-block-start: 1.25rem; }
+  .exp-bullets {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0;
+    padding-inline-start: 1.1rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #444;
+  }
+
+  .skill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .skill-row--loose { margin-block-start: 1.5rem; }
+
+  .related-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .related-list a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    min-block-size: 2rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-crimson-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .related-list a:hover { color: var(--color-ink); }
+  @media (pointer: coarse) {
+    .related-list a { min-block-size: 2.75rem; }
+  }
+
+  .skills-section { padding-block: 1rem 2rem; }
+
+  .cta-section { padding-block: 1rem 5rem; }
+  .cta-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 2rem 2.25rem;
+    border-radius: 1.5rem;
+  }
+  .cta-title {
+    margin: 0 0 0.35rem;
+    font: 800 clamp(1.4rem, 1.1rem + 1.2vw, 2rem) / 1.2 var(--font-display);
+    letter-spacing: -0.03em;
+    color: var(--color-ink);
+  }
+  .cta-title em { font-style: italic; color: var(--color-crimson); }
+  .cta-card p { margin: 0; color: var(--color-muted); font-size: 0.92rem; }
+  .cta-actions { display: flex; flex-wrap: wrap; gap: 0.625rem; }
+
+  @media (max-width: 820px) {
+    .exp-card { padding: 1.25rem; }
+    .exp-cols { grid-template-columns: 1fr; gap: 1.25rem; }
+    .cta-card { padding: 1.5rem 1.25rem; }
+  }
+  @media (forced-colors: active) {
+    .exp-card,
+    .exp-badge { border: 1px solid CanvasText; box-shadow: none; }
+  }
+</style>

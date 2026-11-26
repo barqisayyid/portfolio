@@ -1,0 +1,51 @@
+[
+  {
+    "id": "exp-01",
+    "organization": "Creative Tech Agency",
+    "position": "Frontend Web Developer",
+    "employmentType": "Full-time",
+    "location": "Remote",
+    "startDate": "2025",
+    "endDate": null,
+    "isCurrent": true,
+    "summary": "Memimpin pengembangan antarmuka website client dengan Astro & React, mengoptimalkan skor Core Web Vitals, dan menyusun design tokens berbasis Tailwind CSS 4.",
+    "responsibilities": [
+      "Merancang arsitektur Astro Islands dan token desain Tailwind CSS 4 untuk proyek klien.",
+      "Mencapai skor Lighthouse Performance ≥ 95 & Accessibility 100 pada seluruh deliverable."
+    ],
+    "skills": ["Astro", "React", "Tailwind CSS 4", "TypeScript"],
+    "relatedProjects": ["project-01", "project-05"]
+  },
+  {
+    "id": "exp-02",
+    "organization": "Studio Kreatif Digital",
+    "position": "Graphic Designer & Visual Specialist",
+    "employmentType": "Contract",
+    "location": "Hybrid",
+    "startDate": "2024",
+    "endDate": "2025",
+    "isCurrent": false,
+    "summary": "Merancang identitas visual, materi kampanye publikasi digital, dan aset grafis antarmuka untuk 15+ mitra bisnis UMKM dan institusi pendidikan.",
+    "responsibilities": [
+      "Mengembangkan sistem identitas visual, editorial, dan aset grafis UI untuk 15+ mitra."
+    ],
+    "skills": ["Brand Identity", "Typography", "Figma", "InDesign"],
+    "relatedProjects": ["project-04"]
+  },
+  {
+    "id": "exp-03",
+    "organization": "Pusat Inovasi Digital",
+    "position": "Web Development Intern",
+    "employmentType": "Internship",
+    "location": "On-site",
+    "startDate": "2023",
+    "endDate": "2024",
+    "isCurrent": false,
+    "summary": "Berkolaborasi dalam integrasi antarmuka sistem informasi internal kampus, melakukan pengujian responsivitas dan aksesibilitas web.",
+    "responsibilities": [
+      "Membangun komponen antarmuka portal akademik dan menguji aksesibilitas lintas perangkat."
+    ],
+    "skills": ["HTML", "CSS", "JavaScript", "Accessibility Testing"],
+    "relatedProjects": ["project-03"]
+  }
+]

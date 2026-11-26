@@ -1,0 +1,9 @@
+{
+  "name": "Sayyid Barqi — Portfolio",
+  "short_name": "Sayyid Barqi",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#F5F4F2",
+  "theme_color": "#F5F4F2",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

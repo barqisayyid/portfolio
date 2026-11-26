@@ -1,0 +1,341 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Button from '../ui/Button.astro';
+import NativeDialog from '../ui/NativeDialog.astro';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.id.localeCompare(b.id));
+
+const tone: Record<string, 'rose' | 'sand' | 'ink'> = {
+  'Web Application': 'rose',
+  'Dashboard System': 'sand',
+  'Information System': 'sand',
+  'Creative Design': 'ink',
+  'Landing Page': 'rose',
+  'Digital Experience': 'sand',
+};
+
+// "FinPulse — Wealth Management App" -> "FinPulse" (untuk nama aksesibel)
+const shortName = (title: string) => title.split(' — ')[0];
+---
+
+<section class="content deferred-section" id="projects" tabindex="-1" aria-labelledby="projects-heading">
+  <div class="section-head">
+    <div>
+      <div class="kicker" lang="en">A selection of my work</div>
+      <h2 id="projects-heading" class="section-title" lang="en">Featured <em>Projects</em></h2>
+    </div>
+    <p class="section-intro">
+      Enam project pilihan yang mendemonstrasikan keahlian rekayasa aplikasi web, dashboard sistem, dan karya kreatif digital.
+    </p>
+  </div>
+
+  <div class="project-grid">
+    {
+      projects.map(({ id, data }, i) => {
+        const name = shortName(data.title);
+        const href = `/projects/${data.slug}`;
+        const dialogId = `preview-${data.slug}`;
+        const hasImage = !!data.thumbnail;
+        return (
+          <article class="project-card reveal-item">
+            <div class:list={['project-art', `tone-${tone[data.category]}`]} aria-hidden={hasImage ? undefined : 'true'}>
+              <span class="project-label" aria-hidden="true">{data.category}</span>
+              {hasImage ? (
+                <Image src={data.thumbnail!} alt={data.thumbnailAlt ?? ''} widths={[480, 800]} sizes="(max-width: 820px) 100vw, 45vw" loading="lazy" />
+              ) : data.category === 'Creative Design' ? (
+                <div class="art-type">
+                  <span class="art-type-name">{name.toUpperCase()}</span>
+                  <span class="art-type-sub">Identity &amp; Type</span>
+                </div>
+              ) : data.category === 'Digital Experience' ? (
+                <div class="window" style="--tilt: -2.5deg">
+                  <div class="window-bar" />
+                  <div class="window-3d">3D EXPERIENCE</div>
+                </div>
+              ) : (
+                <div class="window" style={`--tilt: ${i % 2 ? '2deg' : '-2.5deg'}`}>
+                  <div class="window-bar" />
+                  <div class="window-line" />
+                  <div class="window-line short" />
+                  <div class="window-blocks">
+                    {Array.from({ length: i % 2 ? 2 : 3 }).map(() => <i />)}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div class="project-info">
+              <div>
+                <p class="project-meta">
+                  Project {String(i + 1).padStart(2, '0')} · {data.year} · {data.technologies.slice(0, 3).join(' · ')}
+                </p>
+                <h3><a href={href}>{data.title}</a></h3>
+                <p class="project-desc">{data.description}</p>
+              </div>
+
+              <div class="project-footer-actions">
+                <div class="project-action-group">
+                  <button type="button" class="project-link" command="show-modal" commandfor={dialogId}>
+                    Quick Preview <span class="visually-hidden">{name}</span><span class="arrow" aria-hidden="true">↗</span>
+                  </button>
+                  <a class="project-link project-link--accent" href={href}>
+                    Detail Project <span class="visually-hidden">{name}</span><span class="arrow" aria-hidden="true">→</span>
+                  </a>
+                </div>
+                {data.liveUrl && (
+                  <a class="project-link project-link--accent" href={data.liveUrl} target="_blank" rel="noopener noreferrer">
+                    Live Demo <span class="visually-hidden">{name}</span><span class="arrow" aria-hidden="true">↗</span>
+                  </a>
+                )}
+              </div>
+            </div>
+          </article>
+        );
+      })
+    }
+  </div>
+
+  {
+    projects.map(({ data }) => {
+      const name = shortName(data.title);
+      return (
+        <NativeDialog
+          id={`preview-${data.slug}`}
+          kicker={`${data.category} · Quick Preview`}
+          title={data.title}
+          subtitle={String(data.year)}
+          closeLabel={`Tutup preview ${name}`}
+        >
+          <div>
+            <h3 class="dialog-section-label">Ringkasan Project</h3>
+            <p class="dialog-copy">{data.overview}</p>
+          </div>
+          <div>
+            <h3 class="dialog-section-label">Teknologi yang Digunakan</h3>
+            <ul class="tech-list" role="list">
+              {data.technologies.map((t) => <li class="tech-pill">{t}</li>)}
+            </ul>
+          </div>
+          <div class="dialog-actions">
+            <Button href={`/projects/${data.slug}`}>Baca Case Study Lengkap <span aria-hidden="true">→</span></Button>
+            {data.liveUrl && <Button variant="glass" href={data.liveUrl}>Live Demo <span aria-hidden="true">↗</span></Button>}
+          </div>
+        </NativeDialog>
+      );
+    })
+  }
+</section>
+
+<style>
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.375rem;
+  }
+
+  .project-card {
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0.5625rem;
+    border-radius: 1.375rem;
+    background: var(--color-glass);
+    -webkit-backdrop-filter: var(--blur);
+    backdrop-filter: var(--blur);
+    border: 1px solid var(--color-glass-border);
+    box-shadow: 0 10px 32px rgba(31, 26, 23, 0.06), 0 0 0 1px var(--color-glass-edge), inset 0 1px 0 #fff;
+    transition: box-shadow 0.25s ease, border-color 0.25s ease, translate 0.25s ease;
+  }
+  .project-card:hover {
+    border-color: #fff;
+    box-shadow: 0 20px 44px rgba(31, 26, 23, 0.14), 0 0 0 1px rgba(31, 26, 23, 0.2), inset 0 1px 0 #fff;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .project-card:hover { translate: 0 -6px; }
+  }
+
+  /* ---------- Area seni (mockup CSS) ---------- */
+  .project-art {
+    position: relative;
+    display: grid;
+    place-items: center;
+    block-size: 15rem;
+    overflow: hidden;
+    border-radius: 1rem;
+  }
+  .tone-rose { background: #f6d8da; }
+  .tone-sand { background: #efe3d9; }
+  .tone-ink { background: #222026; color: #fff; }
+  .project-art :global(img) {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .project-label {
+    position: absolute;
+    top: 0.95rem;
+    left: 0.95rem;
+    z-index: 2;
+    padding: 0.375rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 1px solid #fff;
+    color: var(--color-ink);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .window {
+    inline-size: 80%;
+    block-size: 74%;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    box-shadow: 0 14px 34px rgba(31, 26, 23, 0.15);
+    rotate: var(--tilt, -2.5deg);
+    transition: rotate 0.3s ease, scale 0.3s ease;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .project-card:hover .window { rotate: 0deg; scale: 1.03; }
+  }
+  .window-bar {
+    inline-size: 35%;
+    block-size: 8px;
+    margin-block-end: 0.75rem;
+    border-radius: 5px;
+    background: rgba(217, 45, 58, 0.45);
+  }
+  .window-line {
+    inline-size: 75%;
+    block-size: 9px;
+    margin: 0.5rem 0;
+    border-radius: 5px;
+    background: rgba(31, 26, 23, 0.14);
+  }
+  .window-line.short { inline-size: 48%; }
+  .window-blocks { display: flex; gap: 0.5rem; margin-block-start: 1rem; }
+  .window-blocks :global(i) {
+    display: block;
+    flex: 1;
+    block-size: 4.375rem;
+    border-radius: 6px;
+    background: rgba(217, 45, 58, 0.14);
+  }
+  .window-3d {
+    display: grid;
+    place-items: center;
+    block-size: 3.75rem;
+    border: 1.5px dashed var(--color-crimson-text);
+    border-radius: 8px;
+    color: var(--color-crimson-text);
+    font-size: 0.82rem;
+    font-weight: 800;
+  }
+
+  .art-type { text-align: center; }
+  .art-type-name {
+    display: block;
+    font: 800 2.25rem var(--font-display);
+    letter-spacing: -0.04em;
+    color: var(--color-coral); /* teks besar */
+  }
+  .art-type-sub {
+    display: block;
+    margin-block-start: 0.25rem;
+    font-size: 0.95rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  /* ---------- Info ---------- */
+  .project-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.25rem 1rem 1rem;
+  }
+  .project-meta {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #555;
+  }
+  .project-info h3 {
+    margin: 0.5rem 0;
+    font: 700 1.3rem/1.25 var(--font-display);
+    color: var(--color-ink);
+  }
+  .project-info h3 a:hover { color: var(--color-crimson-text); }
+  .project-desc {
+    margin: 0 0 1.125rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  .project-footer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-block-start: 0.875rem;
+    border-top: 1px solid rgba(31, 26, 23, 0.1);
+  }
+  .project-action-group {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-block-size: 2rem;
+    padding: 0.2rem 0;
+    border: none;
+    background: none;
+    color: var(--color-ink);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .project-link:hover { color: var(--color-crimson-text); }
+  .project-link--accent { color: var(--color-crimson-text); }
+  .project-link--accent:hover { color: var(--color-ink); }
+  .arrow { font-size: 1.05rem; line-height: 1; color: var(--color-crimson-text); }
+
+  @media (pointer: coarse) {
+    .project-link { min-block-size: 2.75rem; }
+  }
+
+  @container (max-width: 24rem) {
+    .project-footer-actions { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 820px) {
+    .project-grid { grid-template-columns: 1fr; }
+    .project-art { block-size: 13rem; }
+  }
+
+  @media (forced-colors: active) {
+    .project-card,
+    .project-label { border: 1px solid CanvasText; box-shadow: none; }
+    .window { border: 1px solid CanvasText; }
+  }
+</style>

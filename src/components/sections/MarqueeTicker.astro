@@ -1,0 +1,146 @@
+---
+const items = [
+  'Graphic Design',
+  'Website Development',
+  'UI/UX Design',
+  'Creative Direction',
+  'Editorial Layout',
+  'Astro & React',
+];
+---
+
+<section class="ticker" aria-label="Keahlian utama">
+  <div class="ticker-viewport">
+    <div class="ticker-track" data-ticker-track>
+      <ul class="ticker-group" role="list">
+        {items.map((item) => <li><span>{item}</span><b aria-hidden="true">✳</b></li>)}
+      </ul>
+      <ul class="ticker-group" role="list" aria-hidden="true">
+        {items.map((item) => <li><span>{item}</span><b>✳</b></li>)}
+      </ul>
+    </div>
+  </div>
+
+  <button type="button" class="ticker-toggle" data-ticker-toggle>
+    <span aria-hidden="true" data-ticker-icon>⏸</span>
+    <span data-ticker-label>Jeda</span><span class="visually-hidden"> animasi</span>
+  </button>
+</section>
+
+<style>
+  .ticker {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    min-block-size: 3.75rem;
+    background: rgba(255, 255, 255, 0.66);
+    -webkit-backdrop-filter: var(--blur);
+    backdrop-filter: var(--blur);
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid rgba(31, 26, 23, 0.1);
+    color: var(--color-text);
+    font: 700 1rem var(--font-display);
+  }
+  .ticker-viewport {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-block: 0.75rem;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 4%, black 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 4%, black 92%, transparent);
+  }
+  .ticker-track {
+    display: flex;
+    align-items: center;
+    min-inline-size: max-content;
+  }
+  .ticker-group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 2.25rem;
+    margin: 0;
+    padding: 0 2.25rem 0 0;
+    list-style: none;
+  }
+  .ticker-group li {
+    display: flex;
+    align-items: center;
+    gap: 2.25rem;
+  }
+  .ticker b { color: var(--color-crimson); font-size: 1.35rem; }
+
+  /* Default statis. Bergerak hanya jika pengguna tidak meminta gerak minimal */
+  @media (prefers-reduced-motion: no-preference) {
+    .ticker-track { animation: marquee 28s linear infinite; }
+    .ticker-track.is-paused { animation-play-state: paused; }
+  }
+  /* Pengguna reduced-motion yang sengaja menekan "Jalankan" */
+  .ticker-track.force-run { animation: marquee 28s linear infinite; }
+
+  @keyframes marquee {
+    to { translate: -50% 0; }
+  }
+
+  .ticker-toggle {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-block-size: 2.25rem;
+    margin-inline: 0.75rem 1.25rem;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid var(--color-glass-edge);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.88);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(31, 26, 23, 0.08);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .ticker-toggle:hover {
+    background: var(--color-crimson);
+    border-color: var(--color-crimson);
+    color: #fff;
+  }
+  @media (pointer: coarse) {
+    .ticker-toggle { min-block-size: 2.75rem; }
+  }
+  @media (max-width: 820px) {
+    .ticker { font-size: 0.875rem; }
+  }
+  @media (forced-colors: active) {
+    .ticker { border-block: 1px solid CanvasText; }
+    .ticker-toggle { border: 1px solid ButtonText; }
+  }
+</style>
+
+<script>
+  const track = document.querySelector<HTMLElement>('[data-ticker-track]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-ticker-toggle]');
+  const icon = document.querySelector<HTMLElement>('[data-ticker-icon]');
+  const label = document.querySelector<HTMLElement>('[data-ticker-label]');
+
+  if (track && toggle && icon && label) {
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let paused = reduced; // reduced-motion: mulai dalam keadaan diam
+
+    const sync = (): void => {
+      track.classList.toggle('is-paused', paused);
+      track.classList.toggle('force-run', reduced && !paused);
+      document.body.classList.toggle('animations-paused', paused); // orbit badge ikut
+      icon.textContent = paused ? '▶' : '⏸';
+      label.textContent = paused ? 'Jalankan' : 'Jeda'; // nama aksesibel: "Jeda animasi" / "Jalankan animasi"
+    };
+
+    sync();
+    toggle.addEventListener('click', () => {
+      paused = !paused;
+      sync();
+    });
+  }
+</script>

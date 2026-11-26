@@ -1,0 +1,436 @@
+---
+import { site } from '../../data/site';
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+const onHome = pathname === '/';
+
+// Halaman aktif saat build (aria-current). Di homepage, scrollspy mengambil alih.
+function current(href: string): 'page' | undefined {
+  if (href === '/#home') return onHome ? 'page' : undefined;
+  if (href === '/experience') return pathname === '/experience' ? 'page' : undefined;
+  if (href === '/#projects') return pathname.startsWith('/projects/') ? 'page' : undefined;
+  return undefined;
+}
+
+// Di homepage pakai anchor murni (#services) agar scrollspy native bekerja.
+const links = site.nav.map((item) => ({
+  label: item.label,
+  href: onHome && item.href.startsWith('/#') ? item.href.slice(1) : item.href,
+  current: current(item.href),
+}));
+---
+
+<div class="scroll-sentinel" id="scrollSentinel" aria-hidden="true"></div>
+
+<header class="site-header" id="siteHeader">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/">
+      <span class="brand-mark" aria-hidden="true">S.</span>
+      <span>{site.shortName}.</span>
+    </a>
+
+    <ul class="nav-links" id="primary-menu" popover="auto" role="list">
+      <li class="drawer-head">
+        <span class="drawer-title" aria-hidden="true">Menu</span>
+        <button
+          type="button"
+          class="drawer-close"
+          popovertarget="primary-menu"
+          popovertargetaction="hide"
+          aria-label="Tutup menu navigasi"
+        >
+          <span aria-hidden="true">✕</span>
+        </button>
+      </li>
+      {
+        links.map((link) => (
+          <li>
+            <a href={link.href} aria-current={link.current}>
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="nav-actions">
+      <a class="nav-cta" href={onHome ? '#contact' : '/#contact'}>
+        Contact Me <span aria-hidden="true">↗</span>
+      </a>
+      <button
+        type="button"
+        class="menu-btn"
+        popovertarget="primary-menu"
+        popovertargetaction="show"
+        aria-label="Buka menu navigasi"
+      >
+        <span aria-hidden="true">☰</span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<style>
+  .scroll-sentinel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    inline-size: 1px;
+    block-size: 24px;
+    pointer-events: none;
+  }
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    padding-block-start: 1rem;
+    margin-block-start: 0.5rem;
+    pointer-events: none;
+    container-type: scroll-state;
+    container-name: site-nav;
+    view-transition-name: site-header; /* header tidak ikut cross-fade antar-halaman */
+  }
+
+  .nav {
+    pointer-events: auto;
+    position: relative;
+    inline-size: min(66rem, calc(100% - 2.5rem));
+    min-block-size: 3.75rem;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.375rem 0.625rem 0.375rem 1.125rem;
+    background: var(--color-glass);
+    -webkit-backdrop-filter: var(--blur);
+    backdrop-filter: var(--blur);
+    border: 1px solid var(--color-glass-border);
+    border-radius: 999px;
+    box-shadow:
+      0 10px 34px rgba(31, 26, 23, 0.08),
+      0 0 0 1px var(--color-glass-edge),
+      inset 0 1px 0 #fff;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  /* Sticky state: CSS Scroll State Query + fallback kelas .is-stuck */
+  @container site-nav scroll-state(stuck: top) {
+    .nav {
+      background: var(--color-glass-strong);
+      box-shadow:
+        0 14px 40px rgba(31, 26, 23, 0.14),
+        0 0 0 1px rgba(31, 26, 23, 0.12),
+        inset 0 1px 0 #fff;
+    }
+  }
+  .site-header.is-stuck .nav {
+    background: var(--color-glass-strong);
+    box-shadow:
+      0 14px 40px rgba(31, 26, 23, 0.14),
+      0 0 0 1px rgba(31, 26, 23, 0.12),
+      inset 0 1px 0 #fff;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    flex-shrink: 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: -0.03em;
+    color: var(--color-ink);
+  }
+  .brand-mark {
+    display: grid;
+    place-items: center;
+    inline-size: 2rem;
+    block-size: 2rem;
+    border-radius: 50%;
+    background: var(--color-crimson);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 800;
+    box-shadow: 0 0 18px rgba(217, 45, 58, 0.45);
+  }
+
+  /* ---------- Desktop: <ul popover> tampil sebagai baris tautan biasa ---------- */
+  .nav-links {
+    /* reset gaya bawaan popover */
+    position: static;
+    inset: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    overflow: visible;
+    inline-size: auto;
+    block-size: auto;
+    color: inherit;
+
+    display: flex;
+    align-items: center;
+    gap: clamp(0.75rem, 1.6vw, 1.5rem);
+    list-style: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    scroll-target-group: auto;
+  }
+  .drawer-head { display: none; }
+
+  .nav-links a {
+    position: relative;
+    display: inline-block;
+    padding-block: 0.35rem;
+    color: #444;
+    transition: color 0.2s ease;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    block-size: 2px;
+    border-radius: 2px;
+    background: var(--color-crimson-text);
+    scale: 0 1;
+    transition: scale 0.2s ease;
+  }
+  .nav-links a:hover { color: var(--color-crimson-text); }
+
+  /* Penanda aktif: bukan warna saja, ada garis bawah + bobot teks (WCAG 1.4.1) */
+  .nav-links a:is(:target-current, .target-current, [aria-current='page'], [aria-current='true']) {
+    color: var(--color-crimson-text);
+    font-weight: 700;
+  }
+  .nav-links a:is(:target-current, .target-current, [aria-current='page'], [aria-current='true'])::after {
+    scale: 1 1;
+  }
+
+  .nav-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+  .nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-block-size: 2.5rem;
+    padding: 0.65rem 1.35rem;
+    border-radius: 999px;
+    background: var(--color-crimson);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    box-shadow: 0 6px 18px rgba(217, 45, 58, 0.38);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, translate 0.2s ease;
+  }
+  .nav-cta:hover {
+    background: var(--color-crimson-text);
+    box-shadow: 0 8px 24px rgba(217, 45, 58, 0.5);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .nav-cta:hover { translate: 0 -1px; }
+  }
+
+  .menu-btn {
+    display: none;
+    place-items: center;
+    min-inline-size: 2.75rem;
+    min-block-size: 2.75rem;
+    border: 1px solid var(--color-glass-edge);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--color-ink);
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  /* ---------- Mobile / tablet: drawer popover, tinggi 100svh ---------- */
+  @media (max-width: 960px) {
+    .nav { inline-size: calc(100% - 1.5rem); min-block-size: 3.375rem; }
+    .nav-cta { display: none; }
+    .menu-btn { display: grid; }
+
+    .nav-links {
+      display: none;
+      position: fixed;
+      inset: 0 0 0 auto;
+      inline-size: min(22rem, 100%);
+      block-size: 100svh;
+      max-block-size: 100svh;
+      padding: 1.25rem;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.25rem;
+      background: rgba(255, 255, 255, 0.97);
+      -webkit-backdrop-filter: var(--blur);
+      backdrop-filter: var(--blur);
+      border-inline-start: 1px solid #fff;
+      box-shadow: -18px 0 40px rgba(31, 26, 23, 0.18), 0 0 0 1px var(--color-glass-edge);
+      font-size: 1rem;
+      opacity: 0;
+      transition-property: opacity, translate, display, overlay;
+      transition-duration: 0.28s;
+      transition-timing-function: ease-out;
+      transition-behavior: allow-discrete;
+    }
+    .nav-links:popover-open,
+    .nav-links:is(.\:popover-open) {
+      display: flex;
+      opacity: 1;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .nav-links { translate: 1.5rem 0; }
+      .nav-links:popover-open,
+      .nav-links:is(.\:popover-open) { translate: 0 0; }
+    }
+    @starting-style {
+      .nav-links:popover-open { opacity: 0; }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      @starting-style {
+        .nav-links:popover-open { translate: 1.5rem 0; }
+      }
+    }
+
+    .nav-links::backdrop {
+      background: rgba(26, 20, 32, 0.45);
+      overscroll-behavior: contain;
+    }
+
+    .drawer-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-block-end: 0.75rem;
+      padding-block-end: 0.75rem;
+      border-block-end: 1px solid rgba(31, 26, 23, 0.1);
+    }
+    .drawer-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+    .drawer-close {
+      display: grid;
+      place-items: center;
+      min-inline-size: 2.75rem;
+      min-block-size: 2.75rem;
+      border: 1px solid var(--color-glass-edge);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--color-ink);
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .drawer-close:hover {
+      background: var(--color-crimson);
+      border-color: var(--color-crimson);
+      color: #fff;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 0.75rem 0.5rem;
+      min-block-size: 2.75rem;
+    }
+    .nav-links a::after { inset-inline: 0.5rem; }
+  }
+
+  /* ---------- Forced Colors ---------- */
+  @media (forced-colors: active) {
+    .nav,
+    .menu-btn,
+    .drawer-close { border: 1px solid CanvasText; box-shadow: none; }
+    .nav-cta { border: 2px solid Highlight; }
+    .brand-mark { border: 2px solid CanvasText; }
+    .nav-links a::after { background: Highlight; }
+    @media (max-width: 960px) {
+      .nav-links { background: Canvas; border: 1px solid CanvasText; box-shadow: none; }
+    }
+  }
+</style>
+
+<script>
+  const header = document.getElementById('siteHeader');
+  const sentinel = document.getElementById('scrollSentinel');
+  const menu = document.getElementById('primary-menu');
+  const menuLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('#primary-menu a'));
+
+  /* 1. Drawer mobile (popover) ------------------------------------------- */
+  function closeMenu(): void {
+    if (!menu) return;
+    try {
+      if (menu.matches(':popover-open')) menu.hidePopover();
+    } catch {
+      /* popover belum didukung & polyfill belum siap: abaikan */
+    }
+  }
+  // Klik tautan anchor di halaman yang sama harus menutup drawer
+  menuLinks.forEach((a) => a.addEventListener('click', closeMenu));
+  // Jika layar membesar ke desktop saat drawer terbuka, tutup
+  matchMedia('(min-width: 961px)').addEventListener('change', (e) => {
+    if (e.matches) closeMenu();
+  });
+
+  /* 2. Sticky state fallback (jika scroll-state query belum didukung) ----- */
+  if (header && sentinel && !CSS.supports('container-type', 'scroll-state')) {
+    new IntersectionObserver((entries) => {
+      const scrolled = !entries[0].isIntersecting;
+      header.classList.toggle('is-stuck', scrolled);
+      document.body.classList.toggle('is-scrolled', scrolled); // dipakai BackToTop
+    }).observe(sentinel);
+  }
+
+  /* 3. Scrollspy (hanya di homepage) ------------------------------------- */
+  const isHome = location.pathname === '/' || location.pathname === '/index.html';
+  if (isHome) {
+    const hashLinks = menuLinks.filter((a) => (a.getAttribute('href') ?? '').startsWith('#'));
+
+    const setCurrent = (active: HTMLAnchorElement | null): void => {
+      hashLinks.forEach((link) => {
+        if (link === active) {
+          link.setAttribute('aria-current', link.getAttribute('href') === '#home' ? 'page' : 'true');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    };
+
+    if (CSS.supports('scroll-target-group: auto')) {
+      // Visual dikendalikan CSS (:target-current); di sini hanya sinkronisasi aria-current
+      const sync = (): void => {
+        const active = document.querySelector<HTMLAnchorElement>('#primary-menu a:target-current');
+        if (active) setCurrent(active);
+      };
+      document.addEventListener('scrollend', sync);
+      window.addEventListener('load', () => requestAnimationFrame(sync));
+    } else {
+      // Fallback IntersectionObserver
+      const sections = hashLinks
+        .map((a) => document.getElementById((a.getAttribute('href') ?? '').slice(1)))
+        .filter((el): el is HTMLElement => !!el);
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const match = hashLinks.find((a) => a.getAttribute('href') === `#${entry.target.id}`) ?? null;
+            hashLinks.forEach((a) => a.classList.toggle('target-current', a === match));
+            setCurrent(match);
+          });
+        },
+        { rootMargin: '-40% 0px -50% 0px', threshold: 0 },
+      );
+      sections.forEach((s) => observer.observe(s));
+    }
+  }
+</script>

@@ -1,0 +1,94 @@
+---
+import '../styles/global.css';
+import Navbar from '../components/layout/Navbar.astro';
+import Footer from '../components/layout/Footer.astro';
+import BackToTop from '../components/ui/BackToTop.astro';
+import { site } from '../data/site';
+import manropeLatin from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
+import dmSansLatin from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
+  type?: 'website' | 'article';
+}
+
+const {
+  title,
+  description = site.description,
+  image = '/og-image.png',
+  noindex = false,
+  type = 'website',
+} = Astro.props;
+
+// Judul front-loaded: "Topik | Sayyid Barqi"
+const fullTitle = title ? `${title} | ${site.shortName}` : site.title;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
+const robots = site.isStaging || noindex ? 'noindex, nofollow' : 'index, follow';
+
+// Speculation Rules: prefetch tautan internal saat pengguna menunjukkan niat (hover)
+const speculation = {
+  prefetch: [
+    {
+      where: { href_matches: '/*' },
+      eagerness: 'moderate',
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content={robots} />
+    <meta name="theme-color" content="#F5F4F2" />
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={site.shortName} />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+        <link rel="preload" href={manropeLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={dmSansLatin} as="font" type="font/woff2" crossorigin />
+    <!-- Cross-document View Transitions: tahan render sampai #main-content ada -->
+    <link rel="expect" href="#main-content" blocking="render" />
+    <script is:inline type="speculationrules" set:html={JSON.stringify(speculation)} />
+
+    <slot name="head" />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link visually-hidden">Lewati ke konten utama</a>
+
+    <Navbar />
+
+    <main id="main-content" tabindex="-1">
+      <slot />
+    </main>
+
+    <Footer />
+    <BackToTop />
+
+    <script>
+      import '../scripts/progressive-enhancements';
+    </script>
+  </body>
+</html>

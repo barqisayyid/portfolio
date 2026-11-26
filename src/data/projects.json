@@ -1,0 +1,115 @@
+[
+  {
+    "id": "project-01",
+    "slug": "project-01",
+    "title": "FinPulse — Wealth Management App",
+    "category": "Web Application",
+    "year": 2026,
+    "description": "Platform keuangan modern untuk manajemen aset dan portofolio dengan analitik grafik interaktif dan arsitektur modular.",
+    "technologies": ["React", "TypeScript", "Tailwind CSS 4", "Recharts"],
+    "liveUrl": "https://example.com/finpulse",
+    "featured": true,
+    "overview": "Aplikasi manajemen kekayaan dan analisis finansial personal dengan arsitektur modular, visualisasi grafik real-time, dan standar UX perbankan digital terkini.",
+    "challenge": "Pengguna sering kesulitan memantau alokasi portofolio lintas rekening tanpa antarmuka yang penuh angka membingungkan.",
+    "solution": "Menyusun hierarki metrik berlapis dengan kartu ringkasan kontras tinggi, filter rentang waktu instan, dan visualisasi aset adaptif.",
+    "features": [
+      "Ringkasan net-worth & alokasi aset real-time",
+      "Grafik performa interaktif ramah keyboard",
+      "Ekspor laporan ringkasan bulanan"
+    ]
+  },
+  {
+    "id": "project-02",
+    "slug": "project-02",
+    "title": "Aura — Business Intelligence Dashboard",
+    "category": "Dashboard System",
+    "year": 2025,
+    "description": "Dashboard monitoring analitik multi-tenant dengan filter data instan, visualisasi metrik performa, dan export laporan CSV/PDF.",
+    "technologies": ["React", "Chart.js", "Tailwind CSS", "Lucide"],
+    "liveUrl": "https://example.com/aura",
+    "featured": true,
+    "overview": "Sistem dashboard metrik analitik bisnis multi-tenant yang dirancang dengan rasio kontras tinggi, optimasi rendering data volume besar, dan kontrol navigasi intuitif.",
+    "challenge": "Dashboard lama lambat saat memuat ribuan baris metrik operasional dan sulit dibaca di layar laptop kecil.",
+    "solution": "Menerapkan container queries pada widget KPI, rendering tersegmentasi, dan sistem filter cepat tanpa reload penuh.",
+    "features": [
+      "Filter multi-dimensi instan dengan state URL",
+      "Export laporan CSV & PDF sekali klik",
+      "Layout widget responsif berbasis container queries"
+    ]
+  },
+  {
+    "id": "project-03",
+    "slug": "project-03",
+    "title": "Svara — Academic Information System",
+    "category": "Information System",
+    "year": 2025,
+    "description": "Portal akademik terpadu untuk pengelolaan jadwal perkuliahan, registrasi matakuliah, dan evaluasi hasil studi mahasiswa.",
+    "technologies": ["Astro", "TypeScript", "PostgreSQL", "Tailwind CSS"],
+    "liveUrl": "https://example.com/svara",
+    "featured": true,
+    "overview": "Portal informasi akademik terpadu untuk pengelolaan jadwal perkuliahan, registrasi matakuliah, dan evaluasi hasil studi mahasiswa.",
+    "challenge": "Proses pengisian KRS dan pengecekan jadwal di perangkat mobile sering mengalami overflow dan beban server tinggi.",
+    "solution": "Membangun antarmuka static-first dengan Astro & validasi skema ketat sehingga beban klien minimal dan responsif hingga layar 320px.",
+    "features": [
+      "Jadwal kuliah & kalender akademik terintegrasi",
+      "Alur registrasi matakuliah bebas error",
+      "Transkrip & ringkasan progres studi aksesibel"
+    ]
+  },
+  {
+    "id": "project-04",
+    "slug": "project-04",
+    "title": "Kalyana — Identity & Type Specimen",
+    "category": "Creative Design",
+    "year": 2025,
+    "description": "Perancangan sistem identitas visual berbasis tipografi display dan grid asimetris untuk studio seni kontemporer.",
+    "technologies": ["Typography", "Brand Guidelines", "Figma", "InDesign"],
+    "featured": true,
+    "overview": "Perancangan sistem identitas visual berbasis tipografi display dan grid asimetris untuk studio seni kontemporer di media cetak maupun digital.",
+    "challenge": "Menciptakan karakter visual yang berani dan editorial namun tetap mudah diaplikasikan konsisten oleh tim internal studio.",
+    "solution": "Menyusun panduan brand komprehensif meliputi skala tipografi, proporsi grid modular, dan sistem warna berkontras tinggi.",
+    "features": [
+      "Sistem grid editorial 12-kolom asimetris",
+      "Type specimen interaktif & panduan cetak",
+      "Sistem aplikasi logo lintas media"
+    ]
+  },
+  {
+    "id": "project-05",
+    "slug": "project-05",
+    "title": "Nexus AI — Developer Tool Landing Page",
+    "category": "Landing Page",
+    "year": 2026,
+    "description": "Landing page modern dengan visual storytelling, mikro-interaksi responsif, dan performa tinggi.",
+    "technologies": ["Astro SSG", "Motion", "Tailwind CSS 4", "Vercel"],
+    "liveUrl": "https://example.com/nexus-ai",
+    "featured": true,
+    "overview": "Landing page modern untuk produk developer tool AI dengan visual storytelling terarah, mikro-interaksi CSS compositor, dan zero-layout-shift.",
+    "challenge": "Menjelaskan alur kerja teknis CLI & API dalam 5 detik pertama tanpa mengorbankan kecepatan muat halaman (LCP).",
+    "solution": "Menggunakan Astro SSG + animasi CSS native (0 KB runtime animasi) serta ilustrasi interaktif ringan untuk demo fitur inti.",
+    "features": [
+      "Skor Lighthouse Performance 99 & LCP < 1.2s",
+      "Demo arsitektur interaktif tanpa beban bundle besar",
+      "Struktur copywriting konversi terukur"
+    ]
+  },
+  {
+    "id": "project-06",
+    "slug": "project-06",
+    "title": "Nusantara — Cultural Digital Archive",
+    "category": "Digital Experience",
+    "year": 2026,
+    "description": "Ruang pamer digital interaktif yang menyajikan dokumentasi wastra tradisional dengan interaksi berbasis 3D visual.",
+    "technologies": ["WebGL", "Three.js", "React", "Tailwind CSS"],
+    "liveUrl": "https://example.com/nusantara",
+    "featured": true,
+    "overview": "Ruang pamer digital interaktif yang menyajikan dokumentasi wastra tradisional Indonesia dengan eksplorasi visual 3D dan narasi kuratorial.",
+    "challenge": "Membuat arsip budaya terasa imersif dan menarik bagi generasi muda tanpa mengecualikan pengguna perangkat menengah atau pembaca layar.",
+    "solution": "Menggabungkan kanvas 3D progresif yang berhenti saat off-screen dengan metadata kuratorial HTML semantik penuh.",
+    "features": [
+      "Eksplorasi motif wastra interaktif dengan narasi sejarah",
+      "Pausing otomatis untuk efisiensi baterai & GPU",
+      "Fallback galeri resolusi tinggi aksesibel"
+    ]
+  }
+]

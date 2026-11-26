@@ -1,0 +1,160 @@
+---
+import { getCollection } from 'astro:content';
+import NativeDialog from '../ui/NativeDialog.astro';
+
+const works = (await getCollection('creativeWorks')).sort((a, b) => a.id.localeCompare(b.id));
+---
+
+<section class="content deferred-section" id="works" tabindex="-1" aria-labelledby="works-heading">
+  <div class="section-head">
+    <div>
+      <div class="kicker" lang="en">Visual Explorations</div>
+      <h2 id="works-heading" class="section-title" lang="en">Creative <em>Works</em></h2>
+    </div>
+    <p class="section-intro">
+      Kumpulan eksplorasi desain grafis, poster tipografi, dan materi publikasi editorial yang memperkaya dimensi visual.
+    </p>
+  </div>
+
+  <div class="creative-wrap">
+    <div class="creative-grid">
+      {
+        works.map(({ id, data }) => (
+          <article class="creative-card reveal-item">
+            <div class="creative-art" style={`background:${data.mock.bg}; color:${data.mock.color};`} aria-hidden="true">
+              <span class="art-top">{data.mock.top}</span>
+              <span class="art-main">{data.mock.main}</span>
+              <span class="art-bottom">{data.mock.bottom}</span>
+            </div>
+            <div class="creative-info">
+              <h3>
+                <button type="button" class="creative-trigger" command="show-modal" commandfor={`work-${id}`}>
+                  {data.title}<span class="visually-hidden">, buka pratinjau karya</span>
+                </button>
+              </h3>
+              <span class="creative-category">{data.category}</span>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+
+  {
+    works.map(({ id, data }) => (
+      <NativeDialog
+        id={`work-${id}`}
+        kicker={data.category}
+        title={data.title}
+        subtitle={String(data.year)}
+        closeLabel={`Tutup pratinjau ${data.title}`}
+      >
+        <div class="lightbox-stage" style={`background:${data.mock.bg}; color:${data.mock.color};`}>
+          <span class="lightbox-top">{data.mock.top}</span>
+          <div class="lightbox-main">{data.mock.main}</div>
+          <span class="lightbox-bottom">{data.mock.bottom}</span>
+        </div>
+        <p class="dialog-copy">{data.description}</p>
+      </NativeDialog>
+    ))
+  }
+</section>
+
+<style>
+  /* Wrapper = container; grid beradaptasi pada lebar wadahnya, bukan viewport */
+  .creative-wrap { container-type: inline-size; }
+
+  .creative-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  @container (max-width: 60rem) {
+    .creative-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @container (max-width: 30rem) {
+    .creative-grid { grid-template-columns: 1fr; }
+  }
+
+  .creative-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0.5rem;
+    border-radius: 1.25rem;
+    background: var(--color-glass);
+    -webkit-backdrop-filter: var(--blur);
+    backdrop-filter: var(--blur);
+    border: 1px solid var(--color-glass-border);
+    box-shadow: 0 8px 24px rgba(31, 26, 23, 0.05), 0 0 0 1px var(--color-glass-edge), inset 0 1px 0 #fff;
+    transition: box-shadow 0.25s ease, translate 0.25s ease;
+  }
+  .creative-card:hover {
+    box-shadow: 0 16px 36px rgba(31, 26, 23, 0.12), 0 0 0 1px rgba(31, 26, 23, 0.2), inset 0 1px 0 #fff;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .creative-card:hover { translate: 0 -5px; }
+  }
+  .creative-card:has(.creative-trigger:focus-visible) {
+    outline: 3px solid var(--color-crimson-text);
+    outline-offset: 3px;
+  }
+
+  .creative-art {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-block-size: 13.75rem;
+    padding: 1rem;
+    overflow: hidden;
+    border-radius: 0.875rem;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  }
+  .art-top,
+  .art-bottom {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    opacity: 0.8;
+  }
+  .art-main {
+    font: 800 1.5rem/1.1 var(--font-display);
+    overflow-wrap: anywhere;
+  }
+
+  .creative-info { padding: 0.875rem 0.625rem 0.625rem; }
+  .creative-info h3 {
+    margin: 0 0 0.2rem;
+    font: 700 1rem/1.3 var(--font-display);
+    color: var(--color-ink);
+  }
+  .creative-trigger {
+    padding: 0;
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+  .creative-trigger:focus-visible { outline: none; } /* ring dipindah ke kartu via :has() */
+  /* Area klik seluruh kartu */
+  .creative-trigger::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .creative-category {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-crimson-text);
+  }
+
+  @media (forced-colors: active) {
+    .creative-card { border: 1px solid CanvasText; box-shadow: none; }
+    .creative-card:has(.creative-trigger:focus-visible) { outline-color: Highlight; }
+  }
+</style>

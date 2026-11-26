@@ -1,0 +1,92 @@
+---
+import Button from '../ui/Button.astro';
+import { site } from '../../data/site';
+---
+
+<section class="content deferred-section" id="about" tabindex="-1" aria-labelledby="about-heading">
+  <div class="about-grid">
+    <div class="about-mark" aria-hidden="true">
+      <strong>SB.</strong>
+    </div>
+
+    <div class="about-copy">
+      <div class="kicker" lang="en">A little about me</div>
+      <h2 id="about-heading" class="section-title" lang="en">Design-minded.<br /><em>Tech-driven.</em></h2>
+      <p>
+        Saya <strong>{site.name}</strong>, seorang creative designer dan web developer yang tertarik pada titik temu antara desain visual berkarakter, kebersihan rekayasa kode, dan pemecahan masalah nyata.
+      </p>
+      <p>
+        Saya menikmati proses mengubah ide abstrak menjadi pengalaman visual dan antarmuka web interaktif yang bukan hanya indah dipandang, tetapi juga cepat dimuat, intuitif, dan fungsional bagi penggunanya.
+      </p>
+      <Button variant="ghost" href="#contact" lang="en">
+        Let's get to know each other <span aria-hidden="true">↗</span>
+      </Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 3.75rem;
+  }
+
+  .about-mark {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-block-size: 20rem;
+    overflow: hidden;
+    border-radius: 1.625rem;
+    background: var(--color-crimson);
+    box-shadow: 0 24px 50px rgba(217, 45, 58, 0.4);
+  }
+  .about-mark::before,
+  .about-mark::after {
+    content: '';
+    position: absolute;
+    inline-size: 15rem;
+    block-size: 15rem;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+  .about-mark::after {
+    inline-size: 19.375rem;
+    block-size: 19.375rem;
+    background: transparent;
+  }
+  .about-mark strong {
+    z-index: 1;
+    font: 800 5.625rem var(--font-display);
+    letter-spacing: -0.06em;
+    color: #fff;
+    text-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .about-copy p {
+    max-inline-size: 62ch;
+    margin: 0 0 0.875rem;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: #4a4a4a;
+  }
+  .about-copy strong { color: var(--color-ink); }
+
+  @media (max-width: 960px) {
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+  }
+  @media (max-width: 480px) {
+    .about-mark { min-block-size: 15rem; }
+    .about-mark::before { inline-size: 11rem; block-size: 11rem; }
+    .about-mark::after { inline-size: 14rem; block-size: 14rem; }
+    .about-mark strong { font-size: 4rem; }
+  }
+  @media (forced-colors: active) {
+    .about-mark { border: 2px solid CanvasText; }
+  }
+</style>
